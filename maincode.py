@@ -13,6 +13,14 @@ FPS = 25
 screen = pygame.display.set_mode((1000, 600))
 
 
+def order(x, y):
+    """
+    функция принимает на вход  х и у номера узла и возвращает номер узла в матрице смежности
+    :return:
+    """
+    return x * 5 + y
+
+
 def knots():
     """
     отрисовка узлов схемы, также отдельно в конце отрисовывается плюс и минус батарейки
@@ -28,7 +36,7 @@ def knots():
 
 knots()
 
-a = numpy.zeros((25, 25))
+adjacency_matrix = numpy.zeros((25, 25))
 
 clock = pygame.time.Clock()
 clock.tick(FPS)
@@ -39,34 +47,49 @@ while not finished:
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
 
-            if pygame.mouse.get_pos()[0] >= 500:
-                x = pygame.mouse.get_pos()[0]
-                y = pygame.mouse.get_pos()[1]
-                x1 = math.floor((x - 600) / 90)
-                y1 = math.floor((y - 120) / 90)
-                x2 = math.ceil((x - 600) / 90)
-                y2 = math.ceil((y - 120) / 90)
+            if (pygame.mouse.get_pos()[0] >= 600) and (pygame.mouse.get_pos()[0] <= 960) and (
+                    pygame.mouse.get_pos()[1] >= 120) and (pygame.mouse.get_pos()[1] <= 480):
+                x = (pygame.mouse.get_pos()[0] - 600) / 90
+                y = (pygame.mouse.get_pos()[1] - 120) / 90
+                x1 = math.floor(x)
+                y1 = math.floor(y)
+                x2 = math.ceil(x)
+                y2 = math.ceil(y)
                 if pygame.key.get_pressed()[K_1]:
-                    realX = min((x - 600) / 90 - x1, x2 - (x - 600) / 90)
-                    realY = min((y - 120) / 90 - y1, y2 - (y - 120) / 90)
-                    print(realX, realY)
+                    realX = min(x - x1, x2 - x)
+                    realY = min(y - y1, y2 - y)
+
                     if realX >= realY:
-                        if (y - y1) >= (y2 - y):
+                        if abs(y - y1) >= abs(y2 - y):
                             pygame.draw.line(screen, (255, 255, 255), (600 + x1 * 90, 120 + y2 * 90),
                                              (600 + x2 * 90, 120 + y2 * 90), 5)
+
+                            adjacency_matrix[order(x1, y2), order(x2, y2)] = 1
+                            adjacency_matrix[order(x2, y2), order(x1, y2)] = 1
+
+
                         else:
                             pygame.draw.line(screen, (255, 255, 255), (600 + x1 * 90, 120 + y1 * 90),
                                              (600 + x2 * 90, 120 + y1 * 90), 5)
+                            adjacency_matrix[order(x1, y1), order(x2, y1)] = 1
+                            adjacency_matrix[order(x2, y1), order(x1, y1)] = 1
+
                     else:
-                        if (x - x1) >= (x2 - x):
+                        if abs(x - x1) >= abs(x2 - x):
                             pygame.draw.line(screen, (255, 255, 255), (600 + x2 * 90, 120 + y1 * 90),
                                              (600 + x2 * 90, 120 + y2 * 90), 5)
+                            adjacency_matrix[order(x2, y1), order(x2, y2)] = 1
+                            adjacency_matrix[order(x2, y2), order(x2, y1)] = 1
+
                         else:
                             pygame.draw.line(screen, (255, 255, 255), (600 + x1 * 90, 120 + y1 * 90),
                                              (600 + x1 * 90, 120 + y2 * 90), 5)
+                            adjacency_matrix[order(x1, y1), order(x1, y2)] = 1
+                            adjacency_matrix[order(x1, y2), order(x1, y1)] = 1
 
         if event.type == pygame.QUIT:
             finished = True
+            print(adjacency_matrix)
 
         pygame.display.update()
 
