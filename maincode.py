@@ -5,8 +5,9 @@ import math
 from random import randint
 
 from pygame import K_1
+from pygame import K_2
 
-from grid import *
+
 
 pygame.init()
 FPS = 25
@@ -32,6 +33,42 @@ def knots():
 
     pygame.draw.circle(screen, (255, 0, 0), (600, 120), 5, 0)
     pygame.draw.circle(screen, (0, 0, 255), (600, 480), 5, 0)
+
+
+def draw_resist(x1, y1, x2, y2):
+    X = 600 + x1 * 90
+    Y = 120 + y1 * 90
+    XX = 600 + x2 * 90
+    YY = 120 + y2 * 90
+    XA = (XX + 2 * X) / 3
+    YA = (YY + 2 * Y) / 3
+    XB = (2 * XX + X) / 3
+    YB = (2 * YY + Y) / 3
+    if Y == YY:
+        WY1 = YA - abs(XX - X) / 9
+        WX1 = XA
+        WY2 = YA + abs(XX - X) / 9
+        WX2 = XA
+        ZY1 = YB - abs(XX - X) / 9
+        ZX1 = XB
+        ZY2 = YB + abs(XX - X) / 9
+        ZX2 = XB
+    else:
+        WY1 = YA
+        WX1 = XA - abs(YY - Y) / 9
+        WY2 = YA
+        WX2 = XA + abs(YY - Y) / 9
+        ZY1 = YB
+        ZX1 = XB - abs(YY - Y) / 9
+        ZY2 = YB
+        ZX2 = XB + abs(YY - Y) / 9
+
+    pygame.draw.line(screen, (0, 255, 255), (X, Y), (XA, YA), 5)
+    pygame.draw.line(screen, (0, 255, 255), (XB, YB), (XX, YY), 5)
+    pygame.draw.line(screen, (0, 255, 255), (WX1, WY1), (WX2, WY2), 5)
+    pygame.draw.line(screen, (0, 255, 255), (WX1, WY1), (ZX1, ZY1), 5)
+    pygame.draw.line(screen, (0, 255, 255), (ZX1, ZY1), (ZX2, ZY2), 5)
+    pygame.draw.line(screen, (0, 255, 255), (WX2, WY2), (ZX2, ZY2), 5)
 
 
 knots()
@@ -86,6 +123,36 @@ while not finished:
                                              (600 + x1 * 90, 120 + y2 * 90), 5)
                             adjacency_matrix[order(x1, y1), order(x1, y2)] = 1
                             adjacency_matrix[order(x1, y2), order(x1, y1)] = 1
+                if pygame.key.get_pressed()[K_2]:
+                    realX = min(x - x1, x2 - x)
+                    realY = min(y - y1, y2 - y)
+
+                    if realX >= realY:
+                        if abs(y - y1) >= abs(y2 - y):
+                            draw_resist(x1, y2, x2, y2)
+
+                            adjacency_matrix[order(x1, y2), order(x2, y2)] = 2
+                            adjacency_matrix[order(x2, y2), order(x1, y2)] = 2
+
+
+                        else:
+                            draw_resist(x1, y1, x2, y1)
+
+                            adjacency_matrix[order(x1, y1), order(x2, y1)] = 2
+                            adjacency_matrix[order(x2, y1), order(x1, y1)] = 2
+
+                    else:
+                        if abs(x - x1) >= abs(x2 - x):
+                            draw_resist(x2, y1, x2, y2)
+
+                            adjacency_matrix[order(x2, y1), order(x2, y2)] = 2
+                            adjacency_matrix[order(x2, y2), order(x2, y1)] = 2
+
+                        else:
+                            draw_resist(x1, y1, x1, y2)
+
+                            adjacency_matrix[order(x1, y1), order(x1, y2)] = 2
+                            adjacency_matrix[order(x1, y2), order(x1, y1)] = 2
 
         if event.type == pygame.QUIT:
             finished = True
