@@ -1,6 +1,6 @@
 import pygame
 
-from maincode import screen
+#from maincode import screen
 
 
 def knots():
