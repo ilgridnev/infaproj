@@ -2,14 +2,14 @@
 import pygame
 import numpy
 import math
-from random import randint
-
+import pygame.font
 from pygame import K_1
 from pygame import K_2
-
-
+from pygame import K_4
 
 pygame.init()
+pygame.font.init()
+myfont = pygame.font.SysFont('calibri', 30)
 FPS = 25
 screen = pygame.display.set_mode((1000, 600))
 
@@ -33,6 +33,27 @@ def knots():
 
     pygame.draw.circle(screen, (255, 0, 0), (600, 120), 5, 0)
     pygame.draw.circle(screen, (0, 0, 255), (600, 480), 5, 0)
+
+
+def draw_voltmeter(x1, y1, x2, y2):
+    X = 600 + x1 * 90
+    Y = 120 + y1 * 90
+    XX = 600 + x2 * 90
+    YY = 120 + y2 * 90
+    XA = (XX + 3 * X) / 4
+    YA = (YY + 3 * Y) / 4
+    XB = (3 * XX + X) / 4
+    YB = (3 * YY + Y) / 4
+    R = (abs(XX - X) + abs(YY - Y)) / 4
+
+    pygame.draw.line(screen, (255, 0, 0), (X, Y), (XA, YA), 5)
+    pygame.draw.line(screen, (255, 0, 0), (XB, YB), (XX, YY), 5)
+    pygame.draw.circle(screen, (255, 0, 0), ((X + XX) / 2, (Y + YY) / 2), R, 5)
+    surf = myfont.render("V", True, (255, 0, 0))
+    if YY == Y:
+        screen.blit(surf, (XA + 14, YA - 14))
+    else:
+        screen.blit(surf, (XA - 9, YA + 11))
 
 
 def draw_resist(x1, y1, x2, y2):
@@ -153,7 +174,36 @@ while not finished:
 
                             adjacency_matrix[order(x1, y1), order(x1, y2)] = 2
                             adjacency_matrix[order(x1, y2), order(x1, y1)] = 2
+                if pygame.key.get_pressed()[K_4]:
+                    realX = min(x - x1, x2 - x)
+                    realY = min(y - y1, y2 - y)
 
+                    if realX >= realY:
+                        if abs(y - y1) >= abs(y2 - y):
+                            draw_voltmeter(x1, y2, x2, y2)
+
+                            adjacency_matrix[order(x1, y2), order(x2, y2)] = 4
+                            adjacency_matrix[order(x2, y2), order(x1, y2)] = 4
+
+
+                        else:
+                            draw_voltmeter(x1, y1, x2, y1)
+
+                            adjacency_matrix[order(x1, y1), order(x2, y1)] = 4
+                            adjacency_matrix[order(x2, y1), order(x1, y1)] = 4
+
+                    else:
+                        if abs(x - x1) >= abs(x2 - x):
+                            draw_voltmeter(x2, y1, x2, y2)
+
+                            adjacency_matrix[order(x2, y1), order(x2, y2)] = 4
+                            adjacency_matrix[order(x2, y2), order(x2, y1)] = 4
+
+                        else:
+                            draw_voltmeter(x1, y1, x1, y2)
+
+                            adjacency_matrix[order(x1, y1), order(x1, y2)] = 4
+                            adjacency_matrix[order(x1, y2), order(x1, y1)] = 4
         if event.type == pygame.QUIT:
             finished = True
             print(adjacency_matrix)
