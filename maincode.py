@@ -37,7 +37,7 @@ def description():
 
 
 
-def grarhics():
+def graphics():
     pygame.draw.rect(screen, (255, 0, 0), (200, 130, 200, 110), 5)
     surf = myfont.render("Voltage", True, (255, 0, 0))
 
@@ -199,7 +199,7 @@ def draw_battery(x1, y1, x2, y2):
 global volts
 volts = 0
 knots()
-grarhics()
+graphics()
 description()
 adjacency_matrix = numpy.zeros((25, 25))
 
