@@ -19,6 +19,24 @@ FPS = 25
 screen = pygame.display.set_mode((1000, 600))
 
 
+def description():
+    surf = myfont.render("Описание:", True, (255, 111, 255))
+    screen.blit(surf, (50, 270))
+    surf = myfont.render("Кнопка 1 / перемычки / не ограничено", True, (255, 255, 255))
+    screen.blit(surf, (50, 300))
+    surf = myfont.render("Кнопка 2 / резисторы / не ограничено", True, (0, 255, 255))
+    screen.blit(surf, (50, 330))
+    surf = myfont.render("Кнопка 3 / источники / не ограничено", True, (255, 242, 0))
+    screen.blit(surf, (50, 360))
+    surf = myfont.render("Кнопка 4 / вольтметр / 1 штука", True, (255, 0, 0))
+    screen.blit(surf, (50, 390))
+    surf = myfont.render("Кнопка 5 / черный ящик / 1 штука", True, (148, 0, 211))
+    screen.blit(surf, (50, 420))
+    surf = myfont.render("Кнопка 0 / сброс схемы / =(", True, (124, 255, 0))
+    screen.blit(surf, (50, 450))
+
+
+
 def grarhics():
     pygame.draw.rect(screen, (255, 0, 0), (200, 130, 200, 110), 5)
     surf = myfont.render("Voltage", True, (255, 0, 0))
@@ -41,7 +59,10 @@ def knots():
     отрисовка узлов схемы, также отдельно в конце отрисовывается плюс и минус батарейки
     :return:
     """
+
     pygame.draw.rect(screen, (0, 0, 0), (500, 0, 500, 600), 0)
+    surf = secondfont.render("Нормально делай - нормально будет. (с) Карл Гаусс", True, (255, 255, 255))
+    screen.blit(surf, (65, 20))
     for i in range(5):
         for j in range(5):
             pygame.draw.circle(screen, (255, 255, 255), (600 + i * 90, 90 * j + 120), 5, 0)
@@ -179,7 +200,7 @@ global volts
 volts = 0
 knots()
 grarhics()
-
+description()
 adjacency_matrix = numpy.zeros((25, 25))
 
 clock = pygame.time.Clock()
