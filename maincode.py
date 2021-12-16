@@ -8,12 +8,20 @@ from pygame import K_2
 from pygame import K_3
 from pygame import K_4
 from pygame import K_5
+from pygame import K_0
 
 pygame.init()
 pygame.font.init()
 myfont = pygame.font.SysFont('calibri', 30)
+
 FPS = 25
 screen = pygame.display.set_mode((1000, 600))
+
+
+def grarhics():
+    pygame.draw.rect(screen, (255, 0, 0), (200, 130, 200, 110), 5)
+    surf = myfont.render("Voltage", True, (255, 0, 0))
+    screen.blit(surf, (250, 200))
 
 
 def order(x, y):
@@ -163,6 +171,7 @@ def draw_battery(x1, y1, x2, y2):
 
 
 knots()
+grarhics()
 
 adjacency_matrix = numpy.zeros((25, 25))
 
@@ -189,14 +198,17 @@ while not finished:
 
                     if realX >= realY:
                         if abs(y - y1) >= abs(y2 - y):
-                            pygame.draw.line(screen, (255, 255, 255), (600 + x1 * 90, 120 + y2 * 90),
-                                             (600 + x2 * 90, 120 + y2 * 90), 5)
+                            if adjacency_matrix[order(x1, y2), order(x2, y2)] == 0 and \
+                                    adjacency_matrix[order(x2, y2), order(x1, y2)] == 0:
+                                pygame.draw.line(screen, (255, 255, 255), (600 + x1 * 90, 120 + y2 * 90),
+                                                 (600 + x2 * 90, 120 + y2 * 90), 5)
 
-                            adjacency_matrix[order(x1, y2), order(x2, y2)] = 1
-                            adjacency_matrix[order(x2, y2), order(x1, y2)] = 1
+                                adjacency_matrix[order(x1, y2), order(x2, y2)] = 1
+                                adjacency_matrix[order(x2, y2), order(x1, y2)] = 1
 
 
-                        else:
+                        elif adjacency_matrix[order(x1, y1), order(x2, y1)] == 0 and adjacency_matrix[
+                            order(x2, y1), order(x1, y1)] == 0:
                             pygame.draw.line(screen, (255, 255, 255), (600 + x1 * 90, 120 + y1 * 90),
                                              (600 + x2 * 90, 120 + y1 * 90), 5)
                             adjacency_matrix[order(x1, y1), order(x2, y1)] = 1
@@ -204,12 +216,15 @@ while not finished:
 
                     else:
                         if abs(x - x1) >= abs(x2 - x):
-                            pygame.draw.line(screen, (255, 255, 255), (600 + x2 * 90, 120 + y1 * 90),
-                                             (600 + x2 * 90, 120 + y2 * 90), 5)
-                            adjacency_matrix[order(x2, y1), order(x2, y2)] = 1
-                            adjacency_matrix[order(x2, y2), order(x2, y1)] = 1
+                            if adjacency_matrix[order(x2, y1), order(x2, y2)] == 0 and \
+                                    adjacency_matrix[order(x2, y2), order(x2, y1)] == 0:
+                                pygame.draw.line(screen, (255, 255, 255), (600 + x2 * 90, 120 + y1 * 90),
+                                                 (600 + x2 * 90, 120 + y2 * 90), 5)
+                                adjacency_matrix[order(x2, y1), order(x2, y2)] = 1
+                                adjacency_matrix[order(x2, y2), order(x2, y1)] = 1
 
-                        else:
+                        elif adjacency_matrix[order(x1, y1), order(x1, y2)] == 0 and adjacency_matrix[
+                            order(x1, y2), order(x1, y1)] == 0:
                             pygame.draw.line(screen, (255, 255, 255), (600 + x1 * 90, 120 + y1 * 90),
                                              (600 + x1 * 90, 120 + y2 * 90), 5)
                             adjacency_matrix[order(x1, y1), order(x1, y2)] = 1
@@ -220,27 +235,31 @@ while not finished:
                     realY = min(y - y1, y2 - y)
 
                     if realX >= realY:
-                        if abs(y - y1) >= abs(y2 - y):
+                        if abs(y - y1) >= abs(y2 - y) and adjacency_matrix[order(x1, y2), order(x2, y2)] == 0 and \
+                                adjacency_matrix[order(x2, y2), order(x1, y2)] == 0:
                             draw_resist(x1, y2, x2, y2)
 
                             adjacency_matrix[order(x1, y2), order(x2, y2)] = 2
                             adjacency_matrix[order(x2, y2), order(x1, y2)] = 2
 
 
-                        else:
+                        elif adjacency_matrix[order(x1, y1), order(x2, y1)] == 0 and adjacency_matrix[
+                            order(x2, y1), order(x1, y1)] == 0:
                             draw_resist(x1, y1, x2, y1)
 
                             adjacency_matrix[order(x1, y1), order(x2, y1)] = 2
                             adjacency_matrix[order(x2, y1), order(x1, y1)] = 2
 
                     else:
-                        if abs(x - x1) >= abs(x2 - x):
+                        if abs(x - x1) >= abs(x2 - x) and adjacency_matrix[order(x2, y1), order(x2, y2)] == 0 and \
+                                adjacency_matrix[order(x2, y2), order(x2, y1)] == 0:
                             draw_resist(x2, y1, x2, y2)
 
                             adjacency_matrix[order(x2, y1), order(x2, y2)] = 2
                             adjacency_matrix[order(x2, y2), order(x2, y1)] = 2
 
-                        else:
+                        elif adjacency_matrix[order(x1, y1), order(x1, y2)] == 0 and adjacency_matrix[
+                            order(x1, y2), order(x1, y1)] == 0:
                             draw_resist(x1, y1, x1, y2)
 
                             adjacency_matrix[order(x1, y1), order(x1, y2)] = 2
@@ -250,27 +269,31 @@ while not finished:
                     realY = min(y - y1, y2 - y)
 
                     if realX >= realY:
-                        if abs(y - y1) >= abs(y2 - y):
+                        if abs(y - y1) >= abs(y2 - y) and adjacency_matrix[order(x1, y2), order(x2, y2)] == 0 and \
+                                adjacency_matrix[order(x2, y2), order(x1, y2)] == 0:
                             draw_battery(x1, y2, x2, y2)
 
                             adjacency_matrix[order(x1, y2), order(x2, y2)] = 3
                             adjacency_matrix[order(x2, y2), order(x1, y2)] = 3
 
 
-                        else:
+                        elif adjacency_matrix[order(x1, y1), order(x2, y1)] == 0 and adjacency_matrix[
+                            order(x2, y1), order(x1, y1)] == 0:
                             draw_battery(x1, y1, x2, y1)
 
                             adjacency_matrix[order(x1, y1), order(x2, y1)] = 3
                             adjacency_matrix[order(x2, y1), order(x1, y1)] = 3
 
                     else:
-                        if abs(x - x1) >= abs(x2 - x):
+                        if abs(x - x1) >= abs(x2 - x) and adjacency_matrix[order(x2, y1), order(x2, y2)] == 0 and \
+                                adjacency_matrix[order(x2, y2), order(x2, y1)] == 0:
                             draw_battery(x2, y1, x2, y2)
 
                             adjacency_matrix[order(x2, y1), order(x2, y2)] = 3
                             adjacency_matrix[order(x2, y2), order(x2, y1)] = 3
 
-                        else:
+                        elif adjacency_matrix[order(x1, y1), order(x1, y2)] == 0 and adjacency_matrix[
+                            order(x1, y2), order(x1, y1)] == 0:
                             draw_battery(x1, y1, x1, y2)
 
                             adjacency_matrix[order(x1, y1), order(x1, y2)] = 3
@@ -280,27 +303,31 @@ while not finished:
                     realY = min(y - y1, y2 - y)
 
                     if realX >= realY:
-                        if abs(y - y1) >= abs(y2 - y):
+                        if abs(y - y1) >= abs(y2 - y) and adjacency_matrix[order(x1, y2), order(x2, y2)] == 0 and \
+                                adjacency_matrix[order(x2, y2), order(x1, y2)] == 0:
                             draw_voltmeter(x1, y2, x2, y2)
 
                             adjacency_matrix[order(x1, y2), order(x2, y2)] = 4
                             adjacency_matrix[order(x2, y2), order(x1, y2)] = 4
 
 
-                        else:
+                        elif adjacency_matrix[order(x1, y1), order(x2, y1)] == 0 and adjacency_matrix[
+                            order(x2, y1), order(x1, y1)] == 0:
                             draw_voltmeter(x1, y1, x2, y1)
 
                             adjacency_matrix[order(x1, y1), order(x2, y1)] = 4
                             adjacency_matrix[order(x2, y1), order(x1, y1)] = 4
 
                     else:
-                        if abs(x - x1) >= abs(x2 - x):
+                        if abs(x - x1) >= abs(x2 - x) and adjacency_matrix[order(x2, y1), order(x2, y2)] == 0 and \
+                                adjacency_matrix[order(x2, y2), order(x2, y1)] == 0:
                             draw_voltmeter(x2, y1, x2, y2)
 
                             adjacency_matrix[order(x2, y1), order(x2, y2)] = 4
                             adjacency_matrix[order(x2, y2), order(x2, y1)] = 4
 
-                        else:
+                        elif adjacency_matrix[order(x1, y1), order(x1, y2)] == 0 and adjacency_matrix[
+                            order(x1, y2), order(x1, y1)] == 0:
                             draw_voltmeter(x1, y1, x1, y2)
 
                             adjacency_matrix[order(x1, y1), order(x1, y2)] = 4
@@ -310,27 +337,31 @@ while not finished:
                     realY = min(y - y1, y2 - y)
 
                     if realX >= realY:
-                        if abs(y - y1) >= abs(y2 - y):
+                        if abs(y - y1) >= abs(y2 - y) and adjacency_matrix[order(x1, y2), order(x2, y2)] == 0 and \
+                                adjacency_matrix[order(x2, y2), order(x1, y2)] == 0:
                             draw_blackbox(x1, y2, x2, y2)
 
                             adjacency_matrix[order(x1, y2), order(x2, y2)] = 5
                             adjacency_matrix[order(x2, y2), order(x1, y2)] = 5
 
 
-                        else:
+                        elif adjacency_matrix[order(x1, y1), order(x2, y1)] == 0 and adjacency_matrix[
+                            order(x2, y1), order(x1, y1)] == 0:
                             draw_blackbox(x1, y1, x2, y1)
 
                             adjacency_matrix[order(x1, y1), order(x2, y1)] = 5
                             adjacency_matrix[order(x2, y1), order(x1, y1)] = 5
 
                     else:
-                        if abs(x - x1) >= abs(x2 - x):
+                        if abs(x - x1) >= abs(x2 - x) and adjacency_matrix[order(x2, y1), order(x2, y2)] == 0 and \
+                                adjacency_matrix[order(x2, y2), order(x2, y1)] == 0:
                             draw_blackbox(x2, y1, x2, y2)
 
                             adjacency_matrix[order(x2, y1), order(x2, y2)] = 5
                             adjacency_matrix[order(x2, y2), order(x2, y1)] = 5
 
-                        else:
+                        elif adjacency_matrix[order(x1, y1), order(x1, y2)] == 0 and adjacency_matrix[
+                            order(x1, y2), order(x1, y1)] == 0:
                             draw_blackbox(x1, y1, x1, y2)
 
                             adjacency_matrix[order(x1, y1), order(x1, y2)] = 5
