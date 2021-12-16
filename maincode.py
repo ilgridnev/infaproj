@@ -36,8 +36,8 @@ def description():
     screen.blit(surf, (50, 450))
 
 
-
 def graphics():
+    pygame.draw.rect(screen, (0, 0, 0), (200, 130, 200, 110), 0)
     pygame.draw.rect(screen, (255, 0, 0), (200, 130, 200, 110), 5)
     surf = myfont.render("Voltage", True, (255, 0, 0))
 
@@ -208,6 +208,7 @@ clock.tick(FPS)
 finished = False
 
 while not finished:
+    graphics()
 
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
@@ -415,3 +416,4 @@ while not finished:
         pygame.display.update()
 
 pygame.quit()
+
