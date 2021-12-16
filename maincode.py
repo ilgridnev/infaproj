@@ -60,7 +60,7 @@ def knots():
     :return:
     """
 
-    pygame.draw.rect(screen, (0, 0, 0), (500, 0, 500, 600), 0)
+    pygame.draw.rect(screen, (0, 0, 0), (560, 0, 500, 600), 0)
     surf = secondfont.render("Нормально делай - нормально будет. (с) Карл Гаусс", True, (255, 255, 255))
     screen.blit(surf, (65, 20))
     for i in range(5):
