@@ -46,15 +46,15 @@ class Calculation:
         G.add_edges_from(self.edges)
 
         self.nodes = list(G.nodes)
-        q = len(nodes)
+        q = len(self.nodes)
         p = len(self.edges)
 
         A = np.zeros(shape=(q - 1, p))
         for i in range(q - 1):
             for j in range(p):
-                if self.edges[j][0] == nodes[i]:
+                if self.edges[j][0] == self.nodes[i]:
                     A[i][j] = 1
-                elif self.edges[j][1] == nodes[i]:
+                elif self.edges[j][1] == self.nodes[i]:
                     A[i][j] = -1
         A_T = A.transpose()
         Y = np.zeros(shape=(p, p))
@@ -65,7 +65,7 @@ class Calculation:
             elif adjacency_matrix[self.edges[i][0] - 1][self.edges[i][1] - 1] == 2:
                 Y[i][i] = 0.5
             elif adjacency_matrix[self.edges[i][0] - 1][self.edges[i][1] - 1] == 3:
-                Y[i][i] = 1000
+                Y[i][i] = 100000
 
         print(Y)
 
