@@ -9,6 +9,8 @@ from pygame import K_3
 from pygame import K_4
 from pygame import K_5
 from pygame import K_0
+from pygame import K_SPACE
+import calculation
 
 pygame.init()
 pygame.font.init()
@@ -198,10 +200,13 @@ def draw_battery(x1, y1, x2, y2):
 
 global volts
 volts = 0
+exitA = 0
+exitB = 0
 knots()
 graphics()
 description()
 adjacency_matrix = numpy.zeros((25, 25))
+calc = calculation.Calculation()
 
 clock = pygame.time.Clock()
 clock.tick(FPS)
@@ -209,9 +214,25 @@ finished = False
 
 while not finished:
     graphics()
+    # volts = calc.calculate(adjacency_matrix)
 
     for event in pygame.event.get():
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            x = (pygame.mouse.get_pos()[0] - 600) / 90
+            y = (pygame.mouse.get_pos()[1] - 120) / 90
+            x1 = math.floor(x)
+            y1 = math.floor(y)
+            x2 = math.ceil(x)
+            y2 = math.ceil(y)
+            exitA = 1
+
+            exitB = 2
+
+
         if event.type == pygame.KEYDOWN:
+            if pygame.key.get_pressed()[K_SPACE]:
+                calc.calculate(adjacency_matrix)
+                volts = calc.get_voltage(exitA, exitB)
             if pygame.key.get_pressed()[K_0]:
                 knots()
                 volts = 0
@@ -416,4 +437,6 @@ while not finished:
         pygame.display.update()
 
 pygame.quit()
+print(exitA)
+print(exitB)
 
