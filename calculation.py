@@ -36,45 +36,38 @@ class Calculation:
                 elif arr[i][1] == a:
                     arr[i][1] = b
 
-        edges_0 = []
-        self.equal = []
         self.edges = []
         for i in range(len(adjacency_matrix)):
             for j in range(len(adjacency_matrix)):
                 if adjacency_matrix[i][j] != 0:
                     if i + 1 < j + 1:
-                        edges_0.append([i + 1, j + 1])
-                        if adjacency_matrix[i][j] == 1:
-                            self.equal.append([i + 1, j + 1])
-
-        for i in range(len(self.equal)):
-            for j in range(len(edges_0)):
-                replace(edges_0, max(self.equal[i][0], self.equal[i][1]), min(self.equal[i][0], self.equal[i][1]))
-
-        for i in range(len(edges_0)):
-            if edges_0[i][0] != edges_0[i][1]:
-                self.edges.append(edges_0[i])
+                        self.edges.append([i + 1, j + 1])
         G = nx.Graph()
         G.add_edges_from(self.edges)
 
         self.nodes = list(G.nodes)
-        q = len(self.nodes)
+        q = len(nodes)
         p = len(self.edges)
 
         A = np.zeros(shape=(q - 1, p))
         for i in range(q - 1):
             for j in range(p):
-                if self.edges[j][0] == self.nodes[i]:
+                if self.edges[j][0] == nodes[i]:
                     A[i][j] = 1
-                elif self.edges[j][1] == self.nodes[i]:
+                elif self.edges[j][1] == nodes[i]:
                     A[i][j] = -1
         A_T = A.transpose()
         Y = np.zeros(shape=(p, p))
 
         for i in range(p):
-            for j in range(p):
-                if i == j:
-                    Y[i][j] = 0.5
+            if adjacency_matrix[self.edges[i][0] - 1][self.edges[i][1] - 1] == 1:
+                Y[i][i] = 1000
+            elif adjacency_matrix[self.edges[i][0] - 1][self.edges[i][1] - 1] == 2:
+                Y[i][i] = 0.5
+            elif adjacency_matrix[self.edges[i][0] - 1][self.edges[i][1] - 1] == 3:
+                Y[i][i] = 1000
+
+        print(Y)
 
         E = np.zeros(shape=(p, 1))
         for i in range(p):
@@ -97,26 +90,5 @@ class Calculation:
 
         возвращает напряжение (абсолютную разность потенциалов)
         """
-        for i in range(len(self.equal)):
-            if node1 in self.equal[i]:
-                node1 = min(self.equal[i][0], self.equal[i][1])
-            if node2 in self.equal[i]:
-                node2 = min(self.equal[i][0], self.equal[i][1])
-        return abs(self.U_0[self.nodes.index(node1)] - self.U_0[self.nodes.index(node2)])
-
-calc = Calculation()
-calc.calculate([[0, 2, 0, 3, 0, 0, 0, 0, 0],
-                [2, 0, 0, 0, 1, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0, 0, 0],
-                [3, 0, 0, 0, 0, 0, 2, 0, 0],
-                [0, 1, 0, 0, 0, 2, 0, 2, 0],
-                [0, 0, 0, 0, 2, 0, 0, 0, 2],
-                [0, 0, 0, 2, 0, 0, 0, 2, 0],
-                [0, 0, 0, 0, 2, 0, 2, 0, 1],
-                [0, 0, 0, 0, 0, 2, 0, 1, 0]])
-print(calc.get_voltage(1, 5))
-calc.calculate([[0, 2, 0, 3],
-                [2, 0, 1, 0],
-                [0, 1, 0, 2],
-                [3, 0, 2, 0]])
-print(calc.get_voltage(1, 3))
+        res = abs(self.U_0[self.nodes.index(node1)] - self.U_0[self.nodes.index(node2)])
+        return round(res, 2)
