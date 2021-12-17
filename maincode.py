@@ -36,6 +36,8 @@ def description():
     screen.blit(surf, (50, 420))
     surf = myfont.render("Кнопка 0 / сброс схемы / =(", True, (124, 255, 0))
     screen.blit(surf, (50, 450))
+    surf = myfont.render("Пробел   / обсчет схемы / =)", True, (255, 111, 255))
+    screen.blit(surf, (50, 480))
 
 
 def graphics():
@@ -198,7 +200,6 @@ def draw_battery(x1, y1, x2, y2):
     pygame.draw.line(screen, (255, 242, 0), (ZX1, ZY1), (ZX2, ZY2), 5)
 
 
-global volts
 volts = 0
 exitA = 0
 exitB = 0
@@ -220,14 +221,17 @@ while not finished:
         if event.type == pygame.MOUSEBUTTONDOWN:
             x = (pygame.mouse.get_pos()[0] - 600) / 90
             y = (pygame.mouse.get_pos()[1] - 120) / 90
-            x1 = math.floor(x)
-            y1 = math.floor(y)
-            x2 = math.ceil(x)
-            y2 = math.ceil(y)
-            exitA = 1
+            x1 = round(x)
+            y1 = round(y)
 
-            exitB = 2
+            if exitA == 0:
 
+                exitA = order(x1, y1)
+                print(exitA)
+            elif exitB == 0:
+
+                exitB = order(x1, y1)
+                print(exitB)
 
         if event.type == pygame.KEYDOWN:
             if pygame.key.get_pressed()[K_SPACE]:
@@ -437,6 +441,4 @@ while not finished:
         pygame.display.update()
 
 pygame.quit()
-print(exitA)
-print(exitB)
 
