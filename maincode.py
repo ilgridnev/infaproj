@@ -201,8 +201,8 @@ def draw_battery(x1, y1, x2, y2):
 
 
 volts = 0
-exitA = 0
-exitB = 0
+exitA = -1
+exitB = -1
 knots()
 graphics()
 description()
@@ -224,11 +224,11 @@ while not finished:
             x1 = round(x)
             y1 = round(y)
 
-            if exitA == 0:
+            if exitA == -1:
 
                 exitA = order(x1, y1)
                 print(exitA)
-            elif exitB == 0:
+            elif exitB == -1:
 
                 exitB = order(x1, y1)
                 print(exitB)
@@ -236,10 +236,12 @@ while not finished:
         if event.type == pygame.KEYDOWN:
             if pygame.key.get_pressed()[K_SPACE]:
                 calc.calculate(adjacency_matrix)
-                volts = calc.get_voltage(exitA, exitB)
+                volts = round(calc.get_voltage(exitA, exitB), 2)
             if pygame.key.get_pressed()[K_0]:
                 knots()
                 volts = 0
+                exitA = -1
+                exitB = -1
                 for i in range(25):
                     for j in range(25):
                         adjacency_matrix[i, j] = 0
