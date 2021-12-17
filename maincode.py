@@ -207,13 +207,14 @@ knots()
 graphics()
 description()
 adjacency_matrix = numpy.zeros((25, 25))
-calc = calculation.Calculation()
+
 
 clock = pygame.time.Clock()
 clock.tick(FPS)
 finished = False
 
 while not finished:
+    calc = calculation.Calculation()
     graphics()
     # volts = calc.calculate(adjacency_matrix)
 
@@ -226,11 +227,11 @@ while not finished:
 
             if exitA == -1:
 
-                exitA = order(x1, y1)
+                exitA = order(x1, y1)+1
                 print(exitA)
             elif exitB == -1:
 
-                exitB = order(x1, y1)
+                exitB = order(x1, y1)+1
                 print(exitB)
 
         if event.type == pygame.KEYDOWN:
@@ -443,4 +444,3 @@ while not finished:
         pygame.display.update()
 
 pygame.quit()
-
