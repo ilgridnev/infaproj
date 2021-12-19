@@ -57,6 +57,7 @@ class Calculation:
         A_T = A.transpose()
         Y = np.zeros(shape=(p, p))
 
+        # описание внутренней логики цепи
         for i in range(p):
             if adjacency_matrix[self.edges[i][0] - 1][self.edges[i][1] - 1] == 1:
                 Y[i][i] = 1000
