@@ -24,28 +24,26 @@ screen = pygame.display.set_mode((1000, 600))
 def description():
     surf = myfont.render("Описание:", True, (255, 111, 255))
     screen.blit(surf, (50, 270))
-    surf = myfont.render("Кнопка 1 / перемычки / не ограничено", True, (255, 255, 255))
+    surf = myfont.render("Кнопка 1 / перемычки / ", True, (255, 255, 255))
     screen.blit(surf, (50, 300))
-    surf = myfont.render("Кнопка 2 / резисторы / не ограничено", True, (0, 255, 255))
+    surf = myfont.render("Кнопка 2 / резисторы / ", True, (0, 255, 255))
     screen.blit(surf, (50, 330))
-    surf = myfont.render("Кнопка 3 / источники / не ограничено", True, (255, 242, 0))
+    surf = myfont.render("Кнопка 3 / источники / ", True, (255, 242, 0))
     screen.blit(surf, (50, 360))
-    surf = myfont.render("Кнопка 4 / вольтметр / 1 штука", True, (255, 0, 0))
+    surf = myfont.render("Кнопка 4 / черный ящик / ???", True, (148, 0, 211))
     screen.blit(surf, (50, 390))
-    surf = myfont.render("Кнопка 5 / черный ящик / 1 штука", True, (148, 0, 211))
-    screen.blit(surf, (50, 420))
     surf = myfont.render("Кнопка 0 / сброс схемы / =(", True, (124, 255, 0))
-    screen.blit(surf, (50, 450))
+    screen.blit(surf, (50, 420))
     surf = myfont.render("Пробел   / обсчет схемы / =)", True, (255, 111, 255))
-    screen.blit(surf, (50, 480))
+    screen.blit(surf, (50, 450))
 
 
 def graphics():
     pygame.draw.rect(screen, (0, 0, 0), (200, 130, 200, 110), 0)
     pygame.draw.rect(screen, (255, 0, 0), (200, 130, 200, 110), 5)
-    surf = myfont.render("Voltage", True, (255, 0, 0))
+    surf = myfont.render("Voltage A-B", True, (255, 0, 0))
 
-    screen.blit(surf, (250, 200))
+    screen.blit(surf, (230, 200))
     surf = secondfont.render(str(volts) + " [V]", True, (255, 0, 0))
     screen.blit(surf, (250, 160))
 
@@ -373,42 +371,6 @@ while not finished:
                         if abs(y - y1) >= abs(y2 - y):
                             if adjacency_matrix[order(x1, y2), order(x2, y2)] == 0 and \
                                     adjacency_matrix[order(x2, y2), order(x1, y2)] == 0:
-                                draw_voltmeter(x1, y2, x2, y2)
-
-                                adjacency_matrix[order(x1, y2), order(x2, y2)] = 4
-                                adjacency_matrix[order(x2, y2), order(x1, y2)] = 4
-
-
-                        elif adjacency_matrix[order(x1, y1), order(x2, y1)] == 0 and adjacency_matrix[
-                            order(x2, y1), order(x1, y1)] == 0:
-                            draw_voltmeter(x1, y1, x2, y1)
-
-                            adjacency_matrix[order(x1, y1), order(x2, y1)] = 4
-                            adjacency_matrix[order(x2, y1), order(x1, y1)] = 4
-
-                    else:
-                        if abs(x - x1) >= abs(x2 - x):
-                            if adjacency_matrix[order(x2, y1), order(x2, y2)] == 0 and \
-                                    adjacency_matrix[order(x2, y2), order(x2, y1)] == 0:
-                                draw_voltmeter(x2, y1, x2, y2)
-
-                                adjacency_matrix[order(x2, y1), order(x2, y2)] = 4
-                                adjacency_matrix[order(x2, y2), order(x2, y1)] = 4
-
-                        elif adjacency_matrix[order(x1, y1), order(x1, y2)] == 0 and adjacency_matrix[
-                            order(x1, y2), order(x1, y1)] == 0:
-                            draw_voltmeter(x1, y1, x1, y2)
-
-                            adjacency_matrix[order(x1, y1), order(x1, y2)] = 4
-                            adjacency_matrix[order(x1, y2), order(x1, y1)] = 4
-                if pygame.key.get_pressed()[K_5]:
-                    realX = min(x - x1, x2 - x)
-                    realY = min(y - y1, y2 - y)
-
-                    if realX >= realY:
-                        if abs(y - y1) >= abs(y2 - y):
-                            if adjacency_matrix[order(x1, y2), order(x2, y2)] == 0 and \
-                                    adjacency_matrix[order(x2, y2), order(x1, y2)] == 0:
                                 draw_blackbox(x1, y2, x2, y2)
 
                                 adjacency_matrix[order(x1, y2), order(x2, y2)] = 5
@@ -444,4 +406,3 @@ while not finished:
         pygame.display.update()
 
 pygame.quit()
-# HI. IT'S ME
