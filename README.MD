@@ -2,11 +2,11 @@
 # BLACK BOX 
 Our game is a simulation for students.
 
-We have a power supply, a resistor,wires, one voltmeter and a black box(resistoer,which resistance we need to find)
+We have a power supplies, resistors,wires, one voltmeter and a black box(resistor,which resistance we need to find)
 
 You can make different circuits,instructions are given on the interface․
 
-Your aim is with building different circuits, analyze the relationship between voltage and resistance and get the value of the resistance of this box.
+Your aim is with building different circuits,by analyzing the relationship between voltage and resistance get the value of the resistance of this box.
 
 
 
