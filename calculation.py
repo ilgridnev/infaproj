@@ -7,6 +7,11 @@ from utils import matrix_to_list
 
 class Grid(nx.Graph):
     def __init__(self, adjacency_matrix):
+        """
+        Данный класс, являющийся наследуемым от класса networkx.Graph, позволяет просчитывать электрическую цепь
+        при инициализации принимает параметр adjacency_matrix - матрицу смежности, затем составляется
+        и решается система линейных уравнений для потенциалов схемы
+        """
         super().__init__()
         self.matrix = adjacency_matrix
         self.U_0 = []  # Напряжение между узлами
