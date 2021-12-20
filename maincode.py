@@ -7,8 +7,7 @@ from pygame import K_2
 from pygame import K_3
 from pygame import K_4
 
-import logging
-from logging import basicConfig
+
 from logging import getLogger
 
 from pygame import K_0
