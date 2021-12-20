@@ -1,17 +1,15 @@
 # инициализация экрана, настройка частоты обновления, подключение библиотек
 import numpy
-import math
 import pygame.font
 from pygame import K_1
 from pygame import K_2
 from pygame import K_3
 from pygame import K_4
-
-
-from logging import getLogger
-
 from pygame import K_0
 from pygame import K_SPACE
+from logging import getLogger
+
+
 import calculation
 from drawing import draw_resist, draw_blackbox, draw_battery, draw_description, draw_voltmeter, update_nodes, \
     draw_conductor
@@ -21,12 +19,14 @@ log = getLogger("main")
 
 pygame.init()
 pygame.font.init()
+# использумые шрифты
 my_font = pygame.font.SysFont('calibri', 30)
 second_font = pygame.font.SysFont('calibri', 40)
 
 FPS = 25
 screen = pygame.display.set_mode((1000, 600))
 
+# объявление и задание начальных условий для переменных состояний, напряжение нулевое, выводы вольтметра не подключены
 volts = 0
 exitA = -1
 exitB = -1

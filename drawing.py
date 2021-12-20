@@ -128,7 +128,7 @@ def draw_description(screen):
     screen.blit(surf, (50, 270))
     surf = my_font.render("Кнопка 1 / перемычки / ", True, (255, 255, 255))
     screen.blit(surf, (50, 300))
-    surf = my_font.render("Кнопка 2 / резисторы / ", True, (0, 255, 255))
+    surf = my_font.render("Кнопка 2 / резисторы / 2 Ом", True, (0, 255, 255))
     screen.blit(surf, (50, 330))
     surf = my_font.render("Кнопка 3 / источники / ", True, (255, 242, 0))
     screen.blit(surf, (50, 360))
