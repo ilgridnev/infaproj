@@ -16,7 +16,7 @@ from pygame import K_SPACE
 import calculation
 from drawing import draw_resist, draw_blackbox, draw_battery, draw_description, draw_voltmeter, update_nodes, \
     draw_conductor
-from utils import order
+from utils import order, is_mouse_in_grid
 from add_item import add_item
 log = getLogger("main")
 
@@ -75,8 +75,7 @@ while not finished:
                     for j in range(25):
                         adjacency_matrix[i, j] = 0
 
-            if (pygame.mouse.get_pos()[0] >= 600) and (pygame.mouse.get_pos()[0] <= 960) and (
-                    pygame.mouse.get_pos()[1] >= 120) and (pygame.mouse.get_pos()[1] <= 480):  # TODO mouse in grid
+            if is_mouse_in_grid(pygame.mouse.get_pos()):
                 x = (pygame.mouse.get_pos()[0] - 600) / 90
                 y = (pygame.mouse.get_pos()[1] - 120) / 90
                 mouse_pos = x, y

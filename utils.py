@@ -25,9 +25,6 @@ def element_type(num: int) -> str:
     return ELEMENTS[num]
 
 
-def is_field_empty(matrix, p1, p2) -> bool:
-    """"Занято ли это поле в сетке
-    :param p1 : tuple - x1, y1 - координаты точки начала объекта
-    :param p2 : tuple - x2, y2 - координаты точки конца объекта
-    """
-    return True # TODO
+def is_mouse_in_grid(pos):
+    return (pos[0] >= 600) and (pos[0] <= 960) and (
+            pos[1] >= 120) and (pos[1] <= 480)

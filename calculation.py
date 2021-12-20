@@ -1,6 +1,7 @@
 import networkx as nx
 import numpy as np
 
+from config import *
 from utils import matrix_to_list
 
 
@@ -32,15 +33,13 @@ class Grid(nx.Graph):
         # Расчет узловых потенциалов
         for i in range(num_edges):
             if adjacency_matrix[edges[i][0] - 1][edges[i][1] - 1] == 1:
-                # TODO Что за магические цыфрыэ переделай с использованием функции get_element из utils
-                conductor_matrix[i][i] = 1000
-                # TODO Все эти магические константы вынести в конфиг и импортировать
+                conductor_matrix[i][i] = R_1
             elif adjacency_matrix[edges[i][0] - 1][edges[i][1] - 1] == 2:
-                conductor_matrix[i][i] = 0.5
+                conductor_matrix[i][i] = r_1
             elif adjacency_matrix[edges[i][0] - 1][edges[i][1] - 1] == 3:
-                conductor_matrix[i][i] = 100000
+                conductor_matrix[i][i] = R_2
             elif adjacency_matrix[edges[i][0] - 1][edges[i][1] - 1] == 4:
-                conductor_matrix[i][i] = 0.2
+                conductor_matrix[i][i] = r_2
 
         eds_matrix = np.zeros(shape=(num_edges, 1))
         for i in range(num_edges):
@@ -48,14 +47,14 @@ class Grid(nx.Graph):
                 eds_matrix[i][0] = 1
 
         # составляем матричное уравнение
-        Left_side = connections_matrix.dot(conductor_matrix)  # TODO почему с большой цыфры
-        Left_side = Left_side.dot(connections_transpose)
+        left_side = connections_matrix.dot(conductor_matrix)
+        left_side = left_side.dot(connections_transpose)
 
-        Right_side = -connections_matrix.dot(conductor_matrix)
-        Right_side = Right_side.dot(eds_matrix)
+        right_side = -connections_matrix.dot(conductor_matrix)
+        right_side = right_side.dot(eds_matrix)
 
         # решаем систему уравнений с помощью метода нахождения обратной матрицы
-        self.U_0 = np.linalg.solve(Left_side, Right_side)
+        self.U_0 = np.linalg.solve(left_side, right_side)
         self.U_0 = np.append(self.U_0, [0])
 
     def get_voltage(self, node1, node2):
@@ -67,7 +66,6 @@ class Grid(nx.Graph):
         """
         if node1 in self.nodes and node2 in self.nodes:
             res = abs(self.U_0[list(self.nodes).index(node1)] - self.U_0[list(self.nodes).index(node2)])
-            # TODO Почему пишем .index а не [ ] ?
             return res
         else:
             return 0.0
