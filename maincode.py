@@ -9,12 +9,12 @@ from pygame import K_0
 from pygame import K_SPACE
 from logging import getLogger
 
-
 import calculation
 from drawing import draw_resist, draw_blackbox, draw_battery, draw_description, draw_voltmeter, update_nodes, \
     draw_conductor
 from utils import order, is_mouse_in_grid
 from add_item import add_item
+
 log = getLogger("main")
 
 pygame.init()
@@ -30,19 +30,24 @@ screen = pygame.display.set_mode((1000, 600))
 volts = 0
 exitA = -1
 exitB = -1
+# Отрисовка узлов схемы, экрана вольтметра, таблицы подсказок
 update_nodes(screen)
 draw_voltmeter(screen)
 draw_description(screen)
+# Создание матрицы смежностей и заполнение начальными значениями
 adjacency_matrix = numpy.zeros((25, 25))
 
 clock = pygame.time.Clock()
 clock.tick(FPS)
 finished = False
 
+#  Основной цикл
 while not finished:
+    # Обновление значения показаний вольтметра
     draw_voltmeter(screen, volts)
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
+            # После нажатия на кнопку мыши происходит подключение вольтметра к схеме и выделение подключеннх узлов
             # Определяем координаты ближайшего узла сетки
             x1 = round((pygame.mouse.get_pos()[0] - 600) / 90)
             y1 = round((pygame.mouse.get_pos()[1] - 120) / 90)
@@ -61,11 +66,13 @@ while not finished:
 
         if event.type == pygame.KEYDOWN:
             if pygame.key.get_pressed()[K_SPACE]:
+                # Запускается расчет схемы
+                # Обновляется значение напряжения на то, что между узлами, к которым подключен вольтметр
                 grid = calculation.Grid(adjacency_matrix)
                 # Grid - наследник nx.Graph с функцией расчета схем
                 volts = round(grid.get_voltage(exitA, exitB), 2)
             if pygame.key.get_pressed()[K_0]:
-                # Reset
+                # Сброс значений переменных состояний схемы и обновление правого экрана
                 update_nodes(screen)
                 volts = 0
                 exitA = -1
@@ -75,6 +82,8 @@ while not finished:
                         adjacency_matrix[i, j] = 0
 
             if is_mouse_in_grid(pygame.mouse.get_pos()):
+                # Если курсор наведен на схему и нажата клавиша из списка команд, отрисовывается соответств. элемент
+                # Первичный вид координат нажатия (не целый)
                 x = (pygame.mouse.get_pos()[0] - 600) / 90
                 y = (pygame.mouse.get_pos()[1] - 120) / 90
                 mouse_pos = x, y
