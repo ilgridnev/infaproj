@@ -17,7 +17,7 @@ In project we used libraries such as
 - numpy
 - math
 - networkx
-- calculation
+
 
 
 
@@ -58,5 +58,4 @@ Now, let's calculate the value of our black box!!!
 
 Юрий Третьяков backend developer
 
-Лилит Григорян such a good person
-#lets test this
+Лилит Григорян betatester, debagger
