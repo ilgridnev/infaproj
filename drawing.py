@@ -5,6 +5,13 @@ my_font = pygame.font.SysFont('calibri', 30)
 second_font = pygame.font.SysFont('calibri', 40)
 
 
+def draw_conductor(screen, x1, y1, x2, y2):
+    X = 600 + x1 * 90
+    Y = 120 + y1 * 90
+    XX = 600 + x2 * 90
+    YY = 120 + y2 * 90
+    pygame.draw.line(screen, (255, 255, 255), (X, Y), (XX, YY), 5)
+
 def draw_resist(screen, x1, y1, x2, y2):
     X = 600 + x1 * 90
     Y = 120 + y1 * 90

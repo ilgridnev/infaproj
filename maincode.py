@@ -14,9 +14,10 @@ from logging import getLogger
 from pygame import K_0
 from pygame import K_SPACE
 import calculation
-from drawing import draw_resist, draw_blackbox, draw_battery, draw_description, draw_voltmeter, update_nodes
+from drawing import draw_resist, draw_blackbox, draw_battery, draw_description, draw_voltmeter, update_nodes, \
+    draw_conductor
 from utils import order
-
+from add_item import add_item
 log = getLogger("main")
 
 pygame.init()
@@ -78,158 +79,15 @@ while not finished:
                     pygame.mouse.get_pos()[1] >= 120) and (pygame.mouse.get_pos()[1] <= 480):  # TODO mouse in grid
                 x = (pygame.mouse.get_pos()[0] - 600) / 90
                 y = (pygame.mouse.get_pos()[1] - 120) / 90
-                x1 = math.floor(x)
-                y1 = math.floor(y)
-                x2 = math.ceil(x)
-                y2 = math.ceil(y)
-                realX = min(x - x1, x2 - x)
-                realY = min(y - y1, y2 - y)
+                mouse_pos = x, y
                 if pygame.key.get_pressed()[K_1]:
-                    if realX >= realY: # Вертикальное
-                        if abs(y - y1) >= abs(y2 - y):
-                            if adjacency_matrix[order(x1, y2), order(x2, y2)] == 0 and \
-                                    adjacency_matrix[order(x2, y2), order(x1, y2)] == 0:
-                                # Проверка что это поле пустое
-
-                                # TODO нарисовать перемучку
-                                # TODO Какая то муть с (x1, y1) вынести
-                                pygame.draw.line(screen, (255, 255, 255), (600 + x1 * 90, 120 + y2 * 90),
-                                                 (600 + x2 * 90, 120 + y2 * 90), 5)
-
-                                # TODO Разобраться с мутью с x1 y1 и перенести в блок после проверки на
-                                #  вертиклаьсность\горзонтальность
-                                adjacency_matrix[order(x1, y2), order(x2, y2)] = 1
-                                adjacency_matrix[order(x2, y2), order(x1, y2)] = 1
-
-
-                        elif adjacency_matrix[order(x1, y1), order(x2, y1)] == 0 and adjacency_matrix[
-                            order(x2, y1), order(x1, y1)] == 0:
-                            # TODO вынести отрисовку
-                            pygame.draw.line(screen, (255, 255, 255), (600 + x1 * 90, 120 + y1 * 90),
-                                             (600 + x2 * 90, 120 + y1 * 90), 5)
-                            adjacency_matrix[order(x1, y1), order(x2, y1)] = 1
-                            adjacency_matrix[order(x2, y1), order(x1, y1)] = 1
-
-                    else: # TODO Аналогичное с верхом
-                        if abs(x - x1) >= abs(x2 - x):
-                            if adjacency_matrix[order(x2, y1), order(x2, y2)] == 0 and \
-                                    adjacency_matrix[order(x2, y2), order(x2, y1)] == 0:
-                                pygame.draw.line(screen, (255, 255, 255), (600 + x2 * 90, 120 + y1 * 90),
-                                                 (600 + x2 * 90, 120 + y2 * 90), 5)
-                                adjacency_matrix[order(x2, y1), order(x2, y2)] = 1
-                                adjacency_matrix[order(x2, y2), order(x2, y1)] = 1
-
-                        elif adjacency_matrix[order(x1, y1), order(x1, y2)] == 0 and adjacency_matrix[
-                            order(x1, y2), order(x1, y1)] == 0:
-                            pygame.draw.line(screen, (255, 255, 255), (600 + x1 * 90, 120 + y1 * 90),
-                                             (600 + x1 * 90, 120 + y2 * 90), 5)
-                            adjacency_matrix[order(x1, y1), order(x1, y2)] = 1
-                            adjacency_matrix[order(x1, y2), order(x1, y1)] = 1
-
+                    add_item(draw_conductor, 1, mouse_pos, screen, adjacency_matrix)
                 if pygame.key.get_pressed()[K_2]:
-                    if realX < realY:
-                        (x, y) = (y, x)
-                        (x1, y1) = (y1, x1)
-                        (x2, y2) = (y2, x2)
-
-                        if abs(y - y1) >= abs(y2 - y):
-                            if adjacency_matrix[order(x1, y2), order(x2, y2)] == 0 and \
-                                    adjacency_matrix[order(x2, y2), order(x1, y2)] == 0:
-                                draw_resist(screen, x1, y2, x2, y2)
-
-                                adjacency_matrix[order(x1, y2), order(x2, y2)] = 2
-                                adjacency_matrix[order(x2, y2), order(x1, y2)] = 2
-
-
-                        elif adjacency_matrix[order(x1, y1), order(x2, y1)] == 0 and adjacency_matrix[
-                            order(x2, y1), order(x1, y1)] == 0:
-                            draw_resist(screen, x1, y1, x2, y1)
-
-                            adjacency_matrix[order(x1, y1), order(x2, y1)] = 2
-                            adjacency_matrix[order(x2, y1), order(x1, y1)] = 2
-
-                    else:
-                        if abs(x - x1) >= abs(x2 - x):
-                            if adjacency_matrix[order(x2, y1), order(x2, y2)] == 0 and \
-                                    adjacency_matrix[order(x2, y2), order(x2, y1)] == 0:
-                                draw_resist(screen, x2, y1, x2, y2)
-
-                                adjacency_matrix[order(x2, y1), order(x2, y2)] = 2
-                                adjacency_matrix[order(x2, y2), order(x2, y1)] = 2
-
-                        elif adjacency_matrix[order(x1, y1), order(x1, y2)] == 0 and adjacency_matrix[
-                            order(x1, y2), order(x1, y1)] == 0:
-                            draw_resist(screen, x1, y1, x1, y2)
-
-                            adjacency_matrix[order(x1, y1), order(x1, y2)] = 2
-                            adjacency_matrix[order(x1, y2), order(x1, y1)] = 2
+                    add_item(draw_resist, 2, mouse_pos, screen, adjacency_matrix)
                 if pygame.key.get_pressed()[K_3]:
-                    if realX >= realY:
-                        if abs(y - y1) >= abs(y2 - y):
-                            if adjacency_matrix[order(x1, y2), order(x2, y2)] == 0 and \
-                                    adjacency_matrix[order(x2, y2), order(x1, y2)] == 0:
-                                draw_battery(screen, x1, y2, x2, y2)
-
-                                adjacency_matrix[order(x1, y2), order(x2, y2)] = 3
-                                adjacency_matrix[order(x2, y2), order(x1, y2)] = 3
-
-
-                        elif adjacency_matrix[order(x1, y1), order(x2, y1)] == 0 and adjacency_matrix[
-                            order(x2, y1), order(x1, y1)] == 0:
-                            draw_battery(screen, x1, y1, x2, y1)
-
-                            adjacency_matrix[order(x1, y1), order(x2, y1)] = 3
-                            adjacency_matrix[order(x2, y1), order(x1, y1)] = 3
-
-                    else:
-                        if abs(x - x1) >= abs(x2 - x):
-                            if adjacency_matrix[order(x2, y1), order(x2, y2)] == 0 and \
-                                    adjacency_matrix[order(x2, y2), order(x2, y1)] == 0:
-                                draw_battery(screen, x2, y1, x2, y2)
-
-                                adjacency_matrix[order(x2, y1), order(x2, y2)] = 3
-                                adjacency_matrix[order(x2, y2), order(x2, y1)] = 3
-
-                        elif adjacency_matrix[order(x1, y1), order(x1, y2)] == 0 and adjacency_matrix[
-                            order(x1, y2), order(x1, y1)] == 0:
-                            draw_battery(screen, x1, y1, x1, y2)
-
-                            adjacency_matrix[order(x1, y1), order(x1, y2)] = 3
-                            adjacency_matrix[order(x1, y2), order(x1, y1)] = 3
+                    add_item(draw_battery, 3, mouse_pos, screen, adjacency_matrix)
                 if pygame.key.get_pressed()[K_4]:
-
-                    if realX >= realY:
-                        if abs(y - y1) >= abs(y2 - y):
-                            if adjacency_matrix[order(x1, y2), order(x2, y2)] == 0 and \
-                                    adjacency_matrix[order(x2, y2), order(x1, y2)] == 0:
-                                draw_blackbox(screen, x1, y2, x2, y2)
-
-                                adjacency_matrix[order(x1, y2), order(x2, y2)] = 5
-                                adjacency_matrix[order(x2, y2), order(x1, y2)] = 5
-
-
-                        elif adjacency_matrix[order(x1, y1), order(x2, y1)] == 0 and adjacency_matrix[
-                            order(x2, y1), order(x1, y1)] == 0:
-                            draw_blackbox(screen, x1, y1, x2, y1)
-
-                            adjacency_matrix[order(x1, y1), order(x2, y1)] = 5
-                            adjacency_matrix[order(x2, y1), order(x1, y1)] = 5
-
-                    else:
-                        if abs(x - x1) >= abs(x2 - x):
-                            if adjacency_matrix[order(x2, y1), order(x2, y2)] == 0 and \
-                                    adjacency_matrix[order(x2, y2), order(x2, y1)] == 0:
-                                draw_blackbox(screen, x2, y1, x2, y2)
-
-                                adjacency_matrix[order(x2, y1), order(x2, y2)] = 5
-                                adjacency_matrix[order(x2, y2), order(x2, y1)] = 5
-
-                        elif adjacency_matrix[order(x1, y1), order(x1, y2)] == 0 and adjacency_matrix[
-                            order(x1, y2), order(x1, y1)] == 0:
-                            draw_blackbox(screen, x1, y1, x1, y2)
-
-                            adjacency_matrix[order(x1, y1), order(x1, y2)] = 5
-                            adjacency_matrix[order(x1, y2), order(x1, y1)] = 5
+                    add_item(draw_blackbox, 4, mouse_pos, screen, adjacency_matrix)
         if event.type == pygame.QUIT:
             finished = True
             print(adjacency_matrix)
