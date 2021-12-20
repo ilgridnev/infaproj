@@ -1,9 +1,11 @@
 import pygame
 
-from maincode import screen, my_font, second_font, volts
+pygame.font.init()
+my_font = pygame.font.SysFont('calibri', 30)
+second_font = pygame.font.SysFont('calibri', 40)
 
 
-def draw_resist(x1, y1, x2, y2):
+def draw_resist(screen, x1, y1, x2, y2):
     X = 600 + x1 * 90
     Y = 120 + y1 * 90
     XX = 600 + x2 * 90
@@ -39,7 +41,7 @@ def draw_resist(x1, y1, x2, y2):
     pygame.draw.line(screen, (0, 255, 255), (WX2, WY2), (ZX2, ZY2), 5)
 
 
-def draw_blackbox(x1, y1, x2, y2):
+def draw_blackbox(screen, x1, y1, x2, y2):
     X = 600 + x1 * 90
     Y = 120 + y1 * 90
     XX = 600 + x2 * 90
@@ -75,7 +77,7 @@ def draw_blackbox(x1, y1, x2, y2):
     pygame.draw.line(screen, (148, 0, 211), (WX2, WY2), (ZX2, ZY2), 5)
 
 
-def draw_battery(x1, y1, x2, y2):
+def draw_battery(screen, x1, y1, x2, y2):
     """"Нарисовать батарею с данными координатами
     :param
     """
@@ -114,7 +116,7 @@ def draw_battery(x1, y1, x2, y2):
     pygame.draw.line(screen, (255, 242, 0), (ZX1, ZY1), (ZX2, ZY2), 5)
 
 
-def draw_description():
+def draw_description(screen):
     surf = my_font.render("Описание:", True, (255, 111, 255))
     screen.blit(surf, (50, 270))
     surf = my_font.render("Кнопка 1 / перемычки / ", True, (255, 255, 255))
@@ -131,7 +133,7 @@ def draw_description():
     screen.blit(surf, (50, 450))
 
 
-def draw_voltmeter():
+def draw_voltmeter(screen, volts=0):
     pygame.draw.rect(screen, (0, 0, 0), (200, 130, 200, 110), 0)
     pygame.draw.rect(screen, (255, 0, 0), (200, 130, 200, 110), 5)
     surf = my_font.render("Voltage A-B", True, (255, 0, 0))
@@ -141,7 +143,7 @@ def draw_voltmeter():
     screen.blit(surf, (250, 160))
 
 
-def knots():
+def update_nodes(screen):
     """
     отрисовка узлов схемы, также отдельно в конце отрисовывается плюс и минус батарейки
     :return:

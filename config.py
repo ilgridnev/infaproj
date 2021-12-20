@@ -1,4 +1,4 @@
 ELEMENTS = {
-    1: 'resist',
+    1: 'con',
     2: 'conduct'
 } # TODO DOdelat
