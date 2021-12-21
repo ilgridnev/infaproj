@@ -42,7 +42,7 @@ Make your circuits by clicking buttons in the middle of the nodes
 
 ![alt text](https://tlgur.com/d/GW17KrL4)
 
-Click on the nodes to calculate the voltage at a specific site.
+Click on the nodes, then press tab to calculate the voltage at a specific site.
 
 ![alt text](https://tlgur.com/d/GolPWLdg)
 
