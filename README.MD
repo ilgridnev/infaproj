@@ -49,7 +49,7 @@ Click on the nodes, then press tab to calculate the voltage at a specific site.
 
 Now, let's calculate the value of our black box!!!
 
-![alt text](https://tlgur.com/d/4rqxaJNg)
+![alt text](https://tlgur.com/d/GZ3YdPag)
 
 
 
