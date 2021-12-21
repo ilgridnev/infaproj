@@ -31,7 +31,7 @@ Unzip the program and in the *infaproj* click on the maincode file After that th
 
 Here you are!!!
 
-![alt text](https://tlgur.com/d/g572oW58)
+![alt text](https://tlgur.com/d/89BDYXKG)
 
 
 
@@ -40,11 +40,11 @@ Here you are!!!
 
 Make your circuits by clicking buttons in the middle of the nodes
 
-![alt text](https://tlgur.com/d/8e0JeB24)
+![alt text](https://tlgur.com/d/4NqEpXag)
 
 Click on the nodes, then press tab to calculate the voltage at a specific site.
 
-![alt text](https://tlgur.com/d/GJvEp9PG)
+![alt text](https://tlgur.com/d/8QqE9kj8)
 
 
 Now, let's calculate the value of our black box!!!
